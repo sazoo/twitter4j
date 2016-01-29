@@ -21,148 +21,133 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public enum TwitterMethod {
-    /*Search API Methods*/
+    /* Timelines Resources */
+    MENTIONS_TIMELINE,
+    USER_TIMELINE,
+    HOME_TIMELINE,
+    RETWEETS_OF_ME,
+
+
+    /* Tweets Resources */
+    RETWEETS,
+    SHOW_STATUS,
+    DESTROY_STATUS,
+    UPDATE_STATUS,
+    RETWEET_STATUS,
+    OEMBED,
+    LOOKUP,
+
+    /* Search Resources */
     SEARCH,
 
-    DAILY_TRENDS,
-    WEEKLY_TRENDS,
+    /* Direct Messages Resources */
+    DIRECT_MESSAGES,
+    SENT_DIRECT_MESSAGES,
+    DIRECT_MESSAGE,
+    DESTROY_DIRECT_MESSAGE,
+    SEND_DIRECT_MESSAGE,
 
-    /*Timeline Methods*/
-    HOME_TIMELINE,
-    USER_TIMELINE,
-    MENTIONS,
-    RETWEETED_BY_ME,
-    RETWEETED_TO_ME,
-    RETWEETS_OF_ME,
-    RETWEETED_BY_USER,
-    RETWEETED_TO_USER,
+    /* Friends & Followers Resources */
+    FRIENDS_IDS,
+    FOLLOWERS_IDS,
+    LOOKUP_FRIENDSHIPS,
+    INCOMING_FRIENDSHIPS,
+    OUTGOING_FRIENDSHIPS,
+    CREATE_FRIENDSHIP,
+    DESTROY_FRIENDSHIP,
+    UPDATE_FRIENDSHIP,
+    SHOW_FRIENDSHIP,
+    FRIENDS_LIST,
+    FOLLOWERS_LIST,
 
-    /*Status Methods*/
-    SHOW_STATUS,
-    UPDATE_STATUS,
-    DESTROY_STATUS,
-    RETWEET_STATUS,
-    RETWEETS,
-    RETWEETED_BY,
-    RETWEETED_BY_IDS,
+    /* Users Resources */
+    ACCOUNT_SETTINGS,
+    VERIFY_CREDENTIALS,
+    UPDATE_ACCOUNT_SETTINGS,
+    // UPDATE_DELIVERY_DEVICE
+    UPDATE_PROFILE,
+    UPDATE_PROFILE_BACKGROUND_IMAGE,
+    UPDATE_PROFILE_COLORS,
+    UPDATE_PROFILE_IMAGE,
+    BLOCK_LIST,
+    BLOCK_LIST_IDS,
+    CREATE_BLOCK,
+    DESTROY_BLOCK,
+    MUTE_LIST,
+    MUTE_LIST_IDS,
+    CREATE_MUTE,
+    DESTROY_MUTE,
 
-    /*User Methods*/
     SHOW_USER,
     LOOKUP_USERS,
     SEARCH_USERS,
-    SUGGESTED_USER_CATEGORIES,
-    PROFILE_IMAGE,
-    USER_SUGGESTIONS,
-    MEMBER_SUGGESTIONS,
+
     CONTRIBUTORS,
     CONTRIBUTEEES,
+    REMOVE_PROFILE_BANNER,
+    UPDATE_PROFILE_BANNER,
 
-    /*List Methods*/
-    CREATE_USER_LIST,
-    UPDATE_USER_LIST,
+    RATE_LIMIT_STATUS,
+
+    /* Suggested Users Resources */
+    USER_SUGGESTIONS,
+    SUGGESTED_USER_CATEGORIES,
+    MEMBER_SUGGESTIONS,
+
+    /* Favorites Resources */
+    FAVORITES,
+    DESTROY_FAVORITE,
+    CREATE_FAVORITE,
+
+    /* Lists Resources */
     USER_LISTS,
-    SHOW_USER_LIST,
-    DESTROY_USER_LIST,
     USER_LIST_STATUSES,
+    DESTROY_LIST_MEMBER,
     USER_LIST_MEMBERSHIPS,
-    USER_LIST_SUBSCRIPTIONS,
-    ALL_USER_LISTS,
-
-    /*List Members Methods*/
-    LIST_MEMBERS,
-    ADD_LIST_MEMBER,
-    ADD_LIST_MEMBERS,
-    DELETE_LIST_MEMBER,
-    CHECK_LIST_MEMBERSHIP,
-
-    /*List Subscribers Methods*/
     LIST_SUBSCRIBERS,
     SUBSCRIBE_LIST,
-    UNSUBSCRIBE_LIST,
     CHECK_LIST_SUBSCRIPTION,
+    UNSUBSCRIBE_LIST,
+    CREATE_LIST_MEMBERS,
+    CHECK_LIST_MEMBERSHIP,
+    LIST_MEMBERS,
+    CREATE_LIST_MEMBER,
+    DESTROY_USER_LIST,
+    UPDATE_USER_LIST,
+    CREATE_USER_LIST,
+    SHOW_USER_LIST,
+    USER_LIST_SUBSCRIPTIONS,
 
-    /*Direct Message Methods*/
-    DIRECT_MESSAGES,
-    SENT_DIRECT_MESSAGES,
-    SEND_DIRECT_MESSAGE,
-    DESTROY_DIRECT_MESSAGE,
-    DIRECT_MESSAGE,
+    /* Saved Searches Resources */
+    SAVED_SEARCHES,
+    SAVED_SEARCH,
+    CREATE_SAVED_SEARCH,
+    DESTROY_SAVED_SEARCH,
 
-    /*Friendship Methods*/
-    CREATE_FRIENDSHIP,
-    DESTROY_FRIENDSHIP,
-    EXISTS_FRIENDSHIP,
-    SHOW_FRIENDSHIP,
-    INCOMING_FRIENDSHIPS,
-    OUTGOING_FRIENDSHIPS,
-    LOOKUP_FRIENDSHIPS,
-    UPDATE_FRIENDSHIP,
-    NO_RETWEET_IDS,
-
-    /*Social Graph Methods*/
-    FRIENDS_IDS,
-    FOLLOWERS_IDS,
-
-    /*Account Methods*/
-    VERIFY_CREDENTIALS,
-    RATE_LIMIT_STATUS,
-    UPDATE_PROFILE_COLORS,
-    UPDATE_PROFILE_IMAGE,
-    UPDATE_PROFILE_BACKGROUND_IMAGE,
-    UPDATE_PROFILE,
-    ACCOUNT_TOTALS,
-    ACCOUNT_SETTINGS,
-    UPDATE_ACCOUNT_SETTINGS,
-
-    /*Favorite Methods*/
-    FAVORITES,
-    CREATE_FAVORITE,
-    DESTROY_FAVORITE,
-
-    /*Notification Methods*/
-    ENABLE_NOTIFICATION,
-    DISABLE_NOTIFICATION,
-
-    /*Block Methods*/
-    CREATE_BLOCK,
-    DESTROY_BLOCK,
-    EXISTS_BLOCK,
-    BLOCKING_USERS,
-    BLOCKING_USERS_IDS,
-
-    /*Spam Reporting Methods*/
-    REPORT_SPAM,
-
-    /*Saved Searches Methods*/
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
-
-    /*Local Trends Methods*/
-    AVAILABLE_TRENDS,
-    LOCATION_TRENDS,
-
-    /*Geo Methods*/
+    /* Places & Geo Resources */
     SEARCH_PLACES,
     SIMILAR_PLACES,
     REVERSE_GEO_CODE,
     GEO_DETAILS,
-    CREATE_PLACE,
 
-    /* Legal Resources */
+    /* Trends Resources */
+    PLACE_TRENDS,
+    AVAILABLE_TRENDS,
+    CLOSEST_TRENDS,
+
+    /* Spam Reporting Resources */
+    REPORT_SPAM,
+
+    /* OAuth Resources */
+    OAUTH_REQUEST_TOKEN,
+    OAUTH_ACCESS_TOKEN,
+
+    /* Help Resources */
     TERMS_OF_SERVICE,
-    PRIVACY_POLICY,
-
-    /* #newtwitter Methods */
-    RELATED_RESULTS,
-
-    /*Help Methods*/
-    TEST,
     CONFIGURATION,
     LANGUAGES,
+    PRIVACY_POLICY,
 
-    /*OAuth Methods*/
-    OAUTH_REQUEST_TOKEN,
-    OAUTH_ACCESS_TOKEN
+    /* Undocumented Resources */
+    RELATED_RESULTS,
 }

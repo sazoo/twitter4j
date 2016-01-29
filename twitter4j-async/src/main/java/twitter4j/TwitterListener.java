@@ -14,467 +14,224 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package twitter4j;
 
-import twitter4j.api.HelpMethods;
+import twitter4j.api.HelpResources;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuth2Token;
 import twitter4j.auth.RequestToken;
 
+import java.util.Map;
+
 /**
- * A listner for receiving asynchronous responses from Twitter Async APIs.
+ * A listener for receiving asynchronous responses from Twitter Async APIs.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see twitter4j.AsyncTwitter
- * @see twitter4j.TwitterAdapter
  */
 public interface TwitterListener {
-    /*Search API Methods*/
-    void searched(QueryResult queryResult);
+    /* Timelines Resources */
+    void gotMentions(ResponseList<Status> statuses);
 
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotCurrentTrends(Trends trends);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotDailyTrends(ResponseList<Trends> trendsList);
-
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void gotWeeklyTrends(ResponseList<Trends> trendsList);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
     void gotHomeTimeline(ResponseList<Status> statuses);
 
     void gotUserTimeline(ResponseList<Status> statuses);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void gotMentions(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    void gotRetweetedByMe(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
-    void gotRetweetedToMe(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.0.10
-     */
     void gotRetweetsOfMe(ResponseList<Status> statuses);
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    void gotRetweetedByUser(ResponseList<Status> statuses);
+    /* Tweets Resources */
+    void gotRetweets(ResponseList<Status> retweets);
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    void gotRetweetedToUser(ResponseList<Status> statuses);
-
-    /*Status Methods*/
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
     void gotShowStatus(Status status);
-
-    void updatedStatus(Status status);
 
     void destroyedStatus(Status destroyedStatus);
 
-    /**
-     * @since Twitter4J 2.0.10
-     */
+    void updatedStatus(Status status);
+
     void retweetedStatus(Status retweetedStatus);
 
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotRetweets(ResponseList<Status> retweets);
+    void gotOEmbed(OEmbed oembed);
 
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    void gotRetweetedBy(ResponseList<User> users);
+    void lookedup(ResponseList<Status> statuses);
 
-    /**
-     * @since Twitter4J 2.1.3
-     */
-    void gotRetweetedByIDs(IDs ids);
+    /* Search Resources */
+    void searched(QueryResult queryResult);
 
-    /*User Methods*/
-    void gotUserDetail(User user);
-
-    /**
-     * @since Twitter4J 2.1.1
-     */
-    void lookedupUsers(ResponseList<User> users);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void searchedUser(ResponseList<User> userList);
-
-    /**
-     * @since Twitter4J 2.1.1
-     */
-    void gotSuggestedUserCategories(ResponseList<Category> category);
-
-    /**
-     * @since Twitter4J 2.1.1
-     */
-    void gotUserSuggestions(ResponseList<User> users);
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    void gotMemberSuggestions(ResponseList<User> users);
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    void gotProfileImage(ProfileImage image);
-
-    /**
-     * @since Twitter4J 3.0.0
-     */
-    void gotContributors(ResponseList<User> users);
-
-    /**
-     * @since Twitter4J 3.0.0
-     */
-    void gotContributees(ResponseList<User> users);
-
-    /*List Methods*/
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void createdUserList(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void updatedUserList(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotUserLists(PagableResponseList<UserList> userLists);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotShowUserList(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void destroyedUserList(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotUserListStatuses(ResponseList<Status> statuses);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotUserListMemberships(PagableResponseList<UserList> userLists);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotUserListSubscriptions(PagableResponseList<UserList> userLists);
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
-    void gotAllUserLists(ResponseList<UserList> lists);
-
-    /*List Members Methods*/
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotUserListMembers(PagableResponseList<User> users);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void addedUserListMember(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    void addedUserListMembers(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void deletedUserListMember(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void checkedUserListMembership(User users);
-
-    /*List Subscribers Methods*/
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotUserListSubscribers(PagableResponseList<User> users);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void subscribedUserList(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void unsubscribedUserList(UserList userList);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void checkedUserListSubscription(User user);
-
-    /*Direct Message Methods*/
+    /* Direct Messages Resources */
     void gotDirectMessages(ResponseList<DirectMessage> messages);
 
     void gotSentDirectMessages(ResponseList<DirectMessage> messages);
 
-    void sentDirectMessage(DirectMessage message);
-
-    /**
-     * @since Twitter4J 2.1.9
-     */
     void gotDirectMessage(DirectMessage message);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
     void destroyedDirectMessage(DirectMessage message);
 
-    /*Friendship Methods*/
+    void sentDirectMessage(DirectMessage message);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void createdFriendship(User user);
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void destroyedFriendship(User user);
-
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void gotExistsFriendship(boolean exists);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void gotShowFriendship(Relationship relationship);
-
-    /**
-     * @since Twitter4J 2.1.2
-     */
-    void gotIncomingFriendships(IDs ids);
-
-    /**
-     * @since Twitter4J 2.1.2
-     */
-    void gotOutgoingFriendships(IDs ids);
-
-    /*Social Graph Methods*/
+    /* Friends & Followers Resources */
     void gotFriendsIDs(IDs ids);
 
     void gotFollowersIDs(IDs ids);
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
     void lookedUpFriendships(ResponseList<Friendship> friendships);
 
-    /**
-     * @since Twitter4J 2.1.9
-     */
+    void gotIncomingFriendships(IDs ids);
+
+    void gotOutgoingFriendships(IDs ids);
+
+    void createdFriendship(User user);
+
+    void destroyedFriendship(User user);
+
     void updatedFriendship(Relationship relationship);
 
-    /**
-     * @since
-     */
-    void gotNoRetweetIds(IDs ids);
+    void gotShowFriendship(Relationship relationship);
 
-    /*Account Methods*/
+    void gotFriendsList(PagableResponseList<User> users);
+
+    void gotFollowersList(PagableResponseList<User> users);
+
+    /* Users Resources */
+    void gotAccountSettings(AccountSettings settings);
 
     void verifiedCredentials(User user);
 
-    void gotRateLimitStatus(RateLimitStatus rateLimitStatus);
+    void updatedAccountSettings(AccountSettings settings);
+
+    // updatedDeliveryDevice
+    void updatedProfile(User user);
+
+    void updatedProfileBackgroundImage(User user);
 
     void updatedProfileColors(User user);
 
-    /**
-     * @param totals account totals
-     * @since Twitter4J 2.1.9
-     */
-    void gotAccountTotals(AccountTotals totals);
-
-    /**
-     * @param settings account settings
-     * @since Twitter4J 2.1.9
-     */
-    void gotAccountSettings(AccountSettings settings);
-
-    /**
-     * @param settings account settings
-     * @since Twitter4J 2.2.4
-     */
-    void updatedAccountSettings(AccountSettings settings);
-
-    /**
-     * @since Twitter4J 2.1.0
-     */
     void updatedProfileImage(User user);
 
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    void updatedProfileBackgroundImage(User user);
+    void gotBlocksList(ResponseList<User> blockingUsers);
 
-    /**
-     * @since Twitter4J 2.0.2
-     */
-    void updatedProfile(User user);
+    void gotBlockIDs(IDs blockingUsersIDs);
 
-    /*Favorite Methods*/
+    void createdBlock(User user);
+
+    void destroyedBlock(User user);
+
+    void lookedupUsers(ResponseList<User> users);
+
+    void gotUserDetail(User user);
+
+    void searchedUser(ResponseList<User> userList);
+
+    void gotContributees(ResponseList<User> users);
+
+    void gotContributors(ResponseList<User> users);
+
+    void removedProfileBanner();
+
+    void updatedProfileBanner();
+
+    void gotMutesList(ResponseList<User> blockingUsers);
+
+    void gotMuteIDs(IDs blockingUsersIDs);
+
+    void createdMute(User user);
+
+    void destroyedMute(User user);
+
+    /* Suggested Users Resources */
+    void gotUserSuggestions(ResponseList<User> users);
+
+    void gotSuggestedUserCategories(ResponseList<Category> category);
+
+    void gotMemberSuggestions(ResponseList<User> users);
+
+    /* Favorites Resources */
     void gotFavorites(ResponseList<Status> statuses);
 
     void createdFavorite(Status status);
 
     void destroyedFavorite(Status status);
 
-    /*Notification Methods*/
+    /* Lists Resources */
+    void gotUserLists(ResponseList<UserList> userLists);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void enabledNotification(User user);
+    void gotUserListStatuses(ResponseList<Status> statuses);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void disabledNotification(User user);
+    void destroyedUserListMember(UserList userList);
 
-    /*Block Methods*/
+    void gotUserListMemberships(PagableResponseList<UserList> userLists);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void createdBlock(User user);
+    void gotUserListSubscribers(PagableResponseList<User> users);
 
-    /**
-     * @since Twitter4J 2.0.1
-     */
-    void destroyedBlock(User user);
+    void subscribedUserList(UserList userList);
 
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    void gotExistsBlock(boolean blockExists);
+    void checkedUserListSubscription(User user);
 
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    void gotBlockingUsers(ResponseList<User> blockingUsers);
+    void unsubscribedUserList(UserList userList);
 
-    /**
-     * @since Twitter4J 2.0.4
-     */
-    void gotBlockingUsersIDs(IDs blockingUsersIDs);
+    void createdUserListMembers(UserList userList);
 
-    /*Spam Reporting Methods*/
-    void reportedSpam(User reportedSpammer);
+    void checkedUserListMembership(User users);
 
-    /*Saved Searches Methods*/
-    //getSavedSearches()
-    //showSavedSearch()
-    //createSavedSearch()
-    //destroySavedSearch()
+    void createdUserListMember(UserList userList);
 
-    /*Local Trends Methods*/
+    void destroyedUserList(UserList userList);
 
-    /**
-     * @param locations the locations
-     * @since Twitter4J 2.1.1
-     */
-    void gotAvailableTrends(ResponseList<Location> locations);
+    void updatedUserList(UserList userList);
 
-    /**
-     * @param trends trends
-     * @since Twitter4J 2.1.1
-     */
-    void gotLocationTrends(Trends trends);
+    void createdUserList(UserList userList);
 
-    /*Geo Methods*/
-    void searchedPlaces(ResponseList<Place> places);
+    void gotShowUserList(UserList userList);
 
-    void gotSimilarPlaces(SimilarPlaces places);
+    void gotUserListSubscriptions(PagableResponseList<UserList> userLists);
+
+    void gotUserListMembers(PagableResponseList<User> users);
+
+    /* Saved Searches Resources */
+    void gotSavedSearches(ResponseList<SavedSearch> savedSearches);
+
+    void gotSavedSearch(SavedSearch savedSearch);
+
+    void createdSavedSearch(SavedSearch savedSearch);
+
+    void destroyedSavedSearch(SavedSearch savedSearch);
+
+    /* Places & Geo Resources */
+    void gotGeoDetails(Place place);
 
     void gotReverseGeoCode(ResponseList<Place> places);
 
-    void gotGeoDetails(Place place);
+    void searchedPlaces(ResponseList<Place> places);
 
-    void createdPlace(Place place);
+    void gotSimilarPlaces(ResponseList<Place> places);
 
-    /* Legal Resources*/
+    /* Trends Resources */
+    void gotPlaceTrends(Trends trends);
 
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    void gotTermsOfService(String tof);
+    void gotAvailableTrends(ResponseList<Location> locations);
 
-    /**
-     * @since Twitter4J 2.1.7
-     */
-    void gotPrivacyPolicy(String privacyPolicy);
+    void gotClosestTrends(ResponseList<Location> locations);
 
-    /* #newtwitter Methods */
+    /* Spam Reporting Resources */
+    void reportedSpam(User reportedSpammer);
 
-    void gotRelatedResults(RelatedResults relatedResults);
-
-    /*Help Methods*/
-    void tested(boolean test);
-
-    void gotAPIConfiguration(TwitterAPIConfiguration conf);
-
-    void gotLanguages(ResponseList<HelpMethods.Language> languages);
-
-    /**
-     * @param te     TwitterException
-     * @param method
-     */
-    void onException(TwitterException te, TwitterMethod method);
-
-    /*OAuth Methods*/
+    /* OAuth Resources */
     void gotOAuthRequestToken(RequestToken token);
 
     void gotOAuthAccessToken(AccessToken token);
+
+    /* OAuth2 Resources */
+    void gotOAuth2Token(OAuth2Token token);
+
+    /* Help Resources */
+    void gotAPIConfiguration(TwitterAPIConfiguration conf);
+
+    void gotLanguages(ResponseList<HelpResources.Language> languages);
+
+    void gotPrivacyPolicy(String privacyPolicy);
+
+    void gotTermsOfService(String tof);
+
+    void gotRateLimitStatus(Map<String, RateLimitStatus> rateLimitStatus);
+
+    void onException(TwitterException te, TwitterMethod method);
+
 }

@@ -17,21 +17,17 @@
 
 package twitter4j;
 
-import twitter4j.internal.http.HttpParameter;
-import twitter4j.json.DataObjectFactory;
-
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SearchAPITest extends TwitterTestBase {
 
     public SearchAPITest(String name) {
         super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
     }
 
     protected void tearDown() throws Exception {
@@ -63,67 +59,63 @@ public class SearchAPITest extends TwitterTestBase {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
         Query query = new Query(queryStr).until(dateStr);
-        QueryResult queryResult = unauthenticated.search(query);
+        QueryResult queryResult = twitter1.search(query);
+        RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
-        assertTrue(-1 != queryResult.getRefreshUrl().indexOf(queryStr));
-        assertEquals(15, queryResult.getResultsPerPage());
+        assertTrue(-1 != queryResult.getRefreshURL().indexOf(queryStr));
+        assertEquals(15, queryResult.getCount());
         assertTrue(0 < queryResult.getCompletedIn());
-        assertEquals(1, queryResult.getPage());
         assertEquals(queryStr + " until:" + dateStr, queryResult.getQuery());
 
-        List<Tweet> tweets = queryResult.getTweets();
+        List<Status> tweets = queryResult.getTweets();
         assertTrue(1 <= tweets.size());
-        assertEquals(tweets.get(0), DataObjectFactory.createTweet(DataObjectFactory.getRawJSON(tweets.get(0))));
+        assertEquals(tweets.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(tweets.get(0))));
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
-        assertNotNull("from user", tweets.get(0).getFromUser());
-        assertNotNull("from_user_name", tweets.get(0).getFromUserName());
-        assertTrue("fromUserId", -1 != tweets.get(0).getFromUserId());
+        assertNotNull("user", tweets.get(0).getUser());
         assertTrue(-1 != tweets.get(0).getId());
-//        assertNotNull(tweets.get(0).getIsoLanguageCode());
-        String profileImageURL = tweets.get(0).getProfileImageUrl();
-        assertNotNull(profileImageURL);
+        assertNotNull(tweets.get(0).getUser().getProfileImageURL());
         String source = tweets.get(0).getSource();
         assertTrue(-1 != source.indexOf("<a href=\"") || "web".equals(source) || "API".equals(source));
 
 
         query = new Query("from:twit4j doesnothit");
-        queryResult = unauthenticated.search(query);
+        queryResult = twitter1.search(query);
+        assertEquals(queryResult.getRateLimitStatus().getRemaining() + 1, rateLimitStatus.getRemaining());
         assertEquals(0, queryResult.getSinceId());
 //        assertEquals(-1, queryResult.getMaxId());
 //        assertNull(queryResult.getRefreshUrl());
-        assertEquals(15, queryResult.getResultsPerPage());
-//        assertEquals(-1, queryResult.getTotal());
-        assertNull(queryResult.getWarning());
+        assertEquals(15, queryResult.getCount());
         assertTrue(4 > queryResult.getCompletedIn());
-        assertEquals(1, queryResult.getPage());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
 
         queryStr = "%... 日本語";
 
         twitter1.updateStatus(queryStr + new Date());
         query = new Query(queryStr);
-        queryResult = unauthenticated.search(query);
+        queryResult = twitter1.search(query);
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
         query.setQuery("from:al3x");
         query.setGeoCode(new GeoLocation(37.78233252646689, -122.39301681518555), 10, Query.KILOMETERS);
-        queryResult = unauthenticated.search(query);
+        queryResult = twitter1.search(query);
         assertTrue(0 <= queryResult.getTweets().size());
 
-        query = new Query("from:twit4j");
+        query = new Query("from:tsuda");
         query.setSinceId(1671199128);
-        queryResult = unauthenticated.search(query);
+        queryResult = twitter1.search(query);
         assertTrue(0 < queryResult.getTweets().size());
-        assertEquals(6358482, queryResult.getTweets().get(0).getFromUserId());
+        assertEquals(4171231, queryResult.getTweets().get(0).getUser().getId());
+        assertTrue(queryResult.hasNext());
+        assertNotNull(queryResult.nextQuery());
 
-        query = new Query("\\u5e30%u5e30 <%}& foobar").rpp(100).page(1);
+        query = new Query("\\u5e30%u5e30 <%}& foobar").count(100);
         QueryResult result = twitter1.search(query);
     }
 
     public void testEasyPaging() throws Exception {
-        Query query = new Query("from:twit4j doesnothit");
+        Query query = new Query("from:twit4j doesnothit").resultType(Query.POPULAR);
         QueryResult result = twitter1.search(query);
         assertFalse(result.hasNext());
 
@@ -134,35 +126,38 @@ public class SearchAPITest extends TwitterTestBase {
         } while ((query = result.nextQuery()) != null);
     }
 
-    public void testTrends() throws Exception {
-        List<Trends> trendsList;
+    public void testEasyPaging2() throws Exception {
+        int count=0;
+        
+        Calendar now=Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, 1);
+        String until=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH);
+        
+        Set<Long> maxids=new HashSet<Long>();
 
-        trendsList = unauthenticated.getDailyTrends();
-        assertTrends(trendsList, 20);
-
-        trendsList = unauthenticated.getDailyTrends(new Date(), true);
-        assertTrends(trendsList, 20);
-
-        trendsList = unauthenticated.getWeeklyTrends();
-        assertTrends(trendsList, 30);
-
-        trendsList = unauthenticated.getWeeklyTrends(new Date(), true);
-        assertTrends(trendsList, 30);
+        // Don't test since_id here -- it gets clobbered by since
+        // Don't test locale here -- only JP is valid
+        // #tbt is "throwback thursday" -- a fabulously popular hashtag
+        Query query=new Query("#tbt")
+            .lang("en")
+            .geoCode(new GeoLocation(40.7903, -73.9597), 10, "mi")
+            .resultType(Query.ResultType.recent)
+            .since("2014-1-1")
+            .until(until);
+        do {
+            QueryResult qr=twitter1.search(query);
+            count = count+1;
+            query = qr.nextQuery();
+            assertNotNull(query);
+            assertEquals("en", query.getLang());
+            assertTrue(query.getGeocode().endsWith(",10.0mi"));
+            assertEquals(Query.ResultType.recent, query.getResultType());
+            assertTrue("max id not set", query.getMaxId()!=-1L);
+            assertFalse("max id seen before", maxids.contains(query.getMaxId()));
+            maxids.add(query.getMaxId());
+        } while (count < 3);
+        
+        assertTrue("not enough pages for #tbt in test", count >= 3);
     }
 
-    private void assertTrends(List<Trends> trendsArray, int expectedSize) throws Exception {
-        Date trendAt = null;
-        for (Trends singleTrends : trendsArray) {
-            assertTrue((expectedSize - 10) < singleTrends.getTrends().length);
-            if (trendAt != null) {
-                assertTrue(trendAt.before(singleTrends.getTrendAt()));
-            }
-            trendAt = singleTrends.getTrendAt();
-            for (int i = 0; i < singleTrends.getTrends().length; i++) {
-                assertNotNull(singleTrends.getTrends()[i].getName());
-                assertNull(singleTrends.getTrends()[i].getUrl());
-                assertNotNull(singleTrends.getTrends()[i].getQuery());
-            }
-        }
-    }
 }

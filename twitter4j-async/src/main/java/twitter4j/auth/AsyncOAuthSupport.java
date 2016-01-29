@@ -25,7 +25,7 @@ public interface AsyncOAuthSupport {
      *
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void getOAuthRequestTokenAsync();
@@ -36,7 +36,7 @@ public interface AsyncOAuthSupport {
      * @param callbackURL callback URL
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void getOAuthRequestTokenAsync(String callbackURL);
@@ -49,10 +49,25 @@ public interface AsyncOAuthSupport {
      * @param xAuthAccessType Overrides the access level an application requests to a users account. Supported values are read or write. This parameter is intended to allow a developer to register a read/write application but also request read only access when appropriate.
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void getOAuthRequestTokenAsync(String callbackURL, String xAuthAccessType);
+
+
+    /**
+     * Retrieves a request token
+     *
+     * @param callbackURL     callback URL
+     * @param xAuthAccessType Overrides the access level an application requests to a users account. Supported values are read or write. This parameter is intended to allow a developer to register a read/write application but also request read only access when appropriate.
+     * @param xAuthMode       Set to reverse_auth to obtain a special request token to be used in the reverse auth process.
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @since Twitter4J 3.0.0
+     */
+    void getOAuthRequestTokenAsync(String callbackURL, String xAuthAccessType, String xAuthMode);
+
 
     /**
      * Returns an access token associated with this instance.<br>
@@ -60,7 +75,7 @@ public interface AsyncOAuthSupport {
      *
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void getOAuthAccessTokenAsync();
@@ -71,7 +86,7 @@ public interface AsyncOAuthSupport {
      * @param oauthVerifier OAuth verifier. AKA pin.
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void getOAuthAccessTokenAsync(String oauthVerifier);
@@ -82,7 +97,7 @@ public interface AsyncOAuthSupport {
      * @param requestToken the request token
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void getOAuthAccessTokenAsync(RequestToken requestToken);
@@ -93,7 +108,7 @@ public interface AsyncOAuthSupport {
      * @param requestToken  the request token
      * @param oauthVerifier OAuth verifier. AKA pin.
      * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter 3.0.0
      */
     void getOAuthAccessTokenAsync(RequestToken requestToken, String oauthVerifier);
@@ -107,7 +122,7 @@ public interface AsyncOAuthSupport {
      * @param password   the password
      * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
      * @see <a href="https://dev.twitter.com/docs/oauth/xauth">xAuth | Twitter Developers</a>
-     * @see <a href="https://dev.twitter.com/docs/api/1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
      * @since Twitter 3.0.0
      */
     void getOAuthAccessTokenAsync(String screenName, String password);
